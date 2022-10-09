@@ -7,6 +7,7 @@ import Books from "./src/model.js";
 const PORT = process.env.PORT || 3000;
 const kafkaTopic = process.env.KAFKA_TOPIC;
 const kafkaHost = process.env.KAFKA_BOOTSTRAP_SERVERS;
+
 const app = express();
 app.use(express.json());
 
@@ -28,7 +29,7 @@ const dbsAreRunning = async () => {
   });
 };
 
-setTimeout(() => dbsAreRunning, 10000);
+setTimeout(dbsAreRunning, 10000);
 
 app.listen(PORT, () => {
   console.log(`list book server running on port ${PORT}...`);

@@ -7,16 +7,17 @@ import Books from "./src/model.js";
 const PORT = process.env.PORT || 3000;
 const kafkaTopic = process.env.KAFKA_TOPIC;
 const kafkaHost = process.env.KAFKA_BOOTSTRAP_SERVERS;
+
 const app = express();
-app.use(express.json());
+app.use(express.json({ extended: false }));
 
 const dbsAreRunning = async () => {
   connectDB();
   const client = new kafka.KafkaClient({ kafkaHost: kafkaHost });
   const producer = new kafka.Producer(client);
 
-  producer.on("read", async () => {
-    app.post("/", async (req, res) => {
+  app.post("/api/books", async (req, res) => {
+    producer.on("read", async () => {
       producer.send(
         [{ topic: kafkaTopic, messages: JSON.stringify(req.body) }],
         async (error, data) => {
@@ -34,7 +35,7 @@ const dbsAreRunning = async () => {
   });
 };
 
-setTimeout(() => dbsAreRunning, 10000);
+setTimeout(dbsAreRunning, 10000);
 
 app.listen(PORT, () => {
   console.log(`create book server running on port ${PORT}...`);
