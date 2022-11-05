@@ -6,10 +6,6 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
-
-RUN npm i -g nodemon
-
 EXPOSE 8080
 
-CMD ["nodemon", "server.js"]
+CMD ["node", "start"]
