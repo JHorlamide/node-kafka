@@ -1,39 +1,42 @@
 import express from "express";
-import kafka from "kafka-node";
-
+import cors from "cors";
 import connectDB from "./src/config/db.config.js";
-import Books from "./src/model.js";
+import createBookRoute from "./src/createbook.route.js";
 
-const PORT = process.env.PORT || 3000;
-
+const PORT = process.env.PORT || 6060;
 const app = express();
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: "GET,POST,PUT,DELETE,,PATCH",
+  credentials: true,
+}));
+app.use(express.json());
 app.use(express.json({ extended: false }));
+app.use(createBookRoute);
 
-const dbsAreRunning = async () => {
-  connectDB();
-  const client = new kafka.KafkaClient({ kafkaHost: "kafka:9092" });
-  const producer = new kafka.Producer(client);
+function onError(error) {
+  console.error(`Failed to start server:\n${error.stack}`);
+  process.exit(1);
+}
 
-  app.post("/api/books", async (req, res) => {
-    const payloads = [
-      { topic: "test_topic", messages: JSON.stringify(req.body) },
-    ];
-
-    producer.send(payloads, async (error, data) => {
-      if (error) {
-        return console.log(error);
-      }
-
-      console.log(data);
-      const book = await new Books({ ...req.body });
-      await book.save();
-      res.status(201).send({ status: true, data: book });
-    });
-  });
+const main = async () => {
+  try {
+    await connectDB();
+    console.log("createBook: connected to database...");
+  } catch (error) {
+    onError(error);
+  }
 };
 
-setTimeout(dbsAreRunning, 10000);
+main();
 
 app.listen(PORT, () => {
   console.log(`Createbook service running on port ${PORT}...`);
 });
+
+// const dbsAreRunning = async () => {
+//   connectDB();
+// };
+
+// setTimeout(dbsAreRunning, 10000);

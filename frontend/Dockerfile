@@ -1,11 +1,9 @@
 FROM node:16-alpine
 
-WORKDIR /app
+WORKDIR /frontend
 
 COPY package.json package-lock.json ./
 
 RUN npm install
-
-EXPOSE 8080
 
 CMD ["npm", "start"]

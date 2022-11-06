@@ -1,11 +1,11 @@
-FROM node:17-alpine
+FROM node:16-alpine
 
 WORKDIR /app
 
-COPY package.json package*.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install
 
 EXPOSE 9090
 
-CMD ["node", "start"]
+CMD ["npm", "start"]

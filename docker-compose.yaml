@@ -20,10 +20,8 @@ services:
 
   database:
     image: mongo
-    container_name: mongodb
+    restart: always
     ports: [ "27017:27017" ]
-    volumes:
-      - ./data:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "1234"
@@ -33,6 +31,9 @@ services:
     container_name: createbook
     restart: unless-stopped
     ports: [ "8080:8080" ]
+    volumes:
+      - ./createbook:/app:cached,ro
+      - ./createbook/src:/app/src:cached,ro
     environment:
       PORT: "8080"
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -44,8 +45,22 @@ services:
     container_name: listbooks
     restart: unless-stopped
     ports: [ "9090:9090" ]
+    volumes:
+      - ./listbooks:/app:cached,ro
+      - ./listbooks/src:/app/src:cached,ro
     environment:
       PORT: "9090"
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       DATABASE_USER: "root"
       DATABASE_PASSWORD: "1234"
+
+  frontend:
+    build: frontend
+    container_name: frontend
+    ports: [ "3000:3000" ]
+    tty: true
+    volumes:
+      - ./frontend:/frontend
+      - ./frontend/public:/frontend/public:cached,ro
+      - ./frontend/src:/frontend/src:cached,ro
+    depends_on: [ "listbooks" ]
