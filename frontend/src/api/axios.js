@@ -14,7 +14,6 @@ export const getBooks = async (page_number = 0, options = {}) => {
     options
   );
 
-  console.log("Book list response: ", response.data.data);
   return response.data.data;
 };
 
@@ -32,6 +31,5 @@ export const createBook = async (bookPayload) => {
     config
   );
 
-  console.log("Create book response: ", response.data.data);
   return response.data.data;
 };

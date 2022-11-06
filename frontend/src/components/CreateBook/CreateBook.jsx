@@ -30,9 +30,22 @@ const CreateBook = ({ setBooks }) => {
       return;
     }
 
-    createBook(formData).then((book) => {
-      setBooks((prevBook) => [...prevBook, ...formData]);
-    });
+    createBook(formData)
+      .then((book) => {
+        console.log("Book was created: ", book);
+        setBooks((prevBook) => [book, ...prevBook]);
+      })
+      .catch((error) => {
+        setError(error.toString());
+      });
+  };
+
+  const handlePress = (event) => {
+    event.preventDefault();
+
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
   };
 
   return (
@@ -103,6 +116,8 @@ const CreateBook = ({ setBooks }) => {
           className="py-3 bg-black text-center text-white font-semibold
           w-full rounded-full"
           type="submit"
+          onClick={handleSubmit}
+          onKeyPress={handlePress}
         >
           Submit
         </CustomBtn>

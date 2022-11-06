@@ -7,6 +7,8 @@ const useBookHandler = (page_number = 0) => {
   const [error, setError] = useState({});
   const [isError, setIsError] = useState(false);
 
+  console.log("Book State Array: ", books);
+
   useEffect(() => {
     setLoading(true);
     setIsError(false);
@@ -18,7 +20,6 @@ const useBookHandler = (page_number = 0) => {
 
     getBooks(page_number, { signal })
       .then((books) => {
-        console.log("Books fetched: ", books);
         setBooks((prevBook) => [...prevBook, ...books]);
         setLoading(false);
       })

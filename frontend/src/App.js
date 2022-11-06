@@ -12,7 +12,7 @@ const App = () => {
 
   return (
     <Layout>
-      <CreateBook setBook={setBooks} />
+      <CreateBook setBooks={setBooks} />
       <ListBook books={books} loading={loading} />
     </Layout>
   );

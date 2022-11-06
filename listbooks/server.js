@@ -32,7 +32,7 @@ async function main() {
   }
 
   consumer.on("message", async (message) => {
-    console.log("Consumer message: ", message);
+    console.log("Consumer message: ", message.value);
 
     const books = new Books(JSON.parse(message.value));
     await books.save();
