@@ -34,9 +34,3 @@ main();
 app.listen(PORT, () => {
   console.log(`Createbook service running on port ${PORT}...`);
 });
-
-// const dbsAreRunning = async () => {
-//   connectDB();
-// };
-
-// setTimeout(dbsAreRunning, 10000);

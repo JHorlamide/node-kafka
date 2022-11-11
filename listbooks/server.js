@@ -8,11 +8,13 @@ import consumer from "./src/service/kafka.service.js";
 const PORT = process.env.PORT || 2000;
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:3000",
-  methods: "GET,POST,PUT,DELETE,,PATCH",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE,,PATCH",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -48,26 +50,3 @@ main();
 app.listen(PORT, () => {
   console.log(`Listbook service running on port ${PORT}...`);
 });
-
-// const dbsAreRunning = async () => {
-//   connectDB();
-
-//   const client = new kafka.KafkaClient({ kafkaHost: "kafka:9092" });
-//   const clientConfig = [{ topic: "test_topic" }];
-//   const commitConfig = { autoCommit: false };
-
-//   const consumer = new kafka.Consumer(client, clientConfig, commitConfig);
-
-//   consumer.on("message", async (message) => {
-//     console.log("Consumer message: ", message);
-
-//     const books = new Books(JSON.parse(message.value));
-//     await books.save();
-//   });
-
-//   consumer.on("error", async (error) => {
-//     console.log(error);
-//   });
-// };
-
-// setTimeout(dbsAreRunning, 10000);

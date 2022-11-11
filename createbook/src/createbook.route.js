@@ -8,6 +8,7 @@ router.post("/api/books", async (req, res) => {
   const payloads = [
     {
       topic: "test_topic",
+      partition: 0,
       messages: JSON.stringify(req.body),
     },
   ];
