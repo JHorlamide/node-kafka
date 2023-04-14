@@ -12,6 +12,7 @@ const BookCard = ({ bookName, authorName, category, description }) => {
   function openModal() {
     setIsOpen(true);
   }
+
   return (
     <Fragment>
       <BookDetailModal

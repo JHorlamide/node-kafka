@@ -64,3 +64,4 @@ services:
       - ./frontend/public:/frontend/public:cached,ro
       - ./frontend/src:/frontend/src:cached,ro
     depends_on: [ "listbooks" ]
+    

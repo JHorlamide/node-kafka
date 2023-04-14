@@ -18,8 +18,7 @@ router.post("/api/books", async (req, res) => {
       return console.log(error);
     }
 
-    console.log(data);
-    const book = await new Books({ ...req.body });
+    const book = new Books({ ...req.body });
     await book.save();
 
     res.status(201).json({ status: true, data: book });
